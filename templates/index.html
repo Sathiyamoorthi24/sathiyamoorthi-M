@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Uber Smart Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <h1>🚖 UberApp
+    </h1>
+        <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#add">Add</a></li>
+        <li><a href="#view">Records</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="hero">
+    <div class="overlay">
+        <h1 class="fade">Ride Monster 🚗</h1>
+        <p class="fade">"Your safety is My priority"</p>
+        <a href="#add" class="btn fade">Get Started</a>
+    </div>
+</section>
+
+<!-- ADD FORM -->
+<section id="add" class="section fade">
+    <div class="card">
+        <h2>Add Customer</h2>
+
+        <form action="/insert" method="POST" class="form">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="text" name="mobile" placeholder="Mobile" required>
+            <input type="number" name="amount" placeholder="Fare" required>
+            <input type="text" name="location" placeholder="Location" required>
+
+            <button>Add Customer</button>
+        </form>
+    </div>
+</section>
+
+<!-- TABLE -->
+<section id="view" class="section fade">
+    <div class="table-card">
+        <h2>Customer Records</h2>
+
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Fare</th>
+                <th>Location</th>
+                <th>Action</th>
+            </tr>
+
+            {% for row in customers %}
+            <tr>
+                <form action="/update" method="POST">
+                    <td><input name="name" value="{{ row[0] }}"></td>
+                    <td><input name="mobile" value="{{ row[1] }}" readonly></td>
+                    <td><input name="amount" value="{{ row[2] }}"></td>
+                    <td><input name="location" value="{{ row[3] }}"></td>
+
+                    <td>
+                        <button class="update">Update</button>
+                        <a href="/delete/{{ row[1] }}" class="delete">Delete</a>
+                    </td>
+                </form>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>© Developed By Sathiyamoorthi</p>
+</footer>
+
+<!-- SCROLL ANIMATION SCRIPT -->
+<script>
+const faders = document.querySelectorAll('.fade');
+
+window.addEventListener('scroll', () => {
+    const triggerBottom = window.innerHeight * 0.8;
+
+    faders.forEach(el => {
+        const boxTop = el.getBoundingClientRect().top;
+
+        if (boxTop < triggerBottom) {
+            el.classList.add('show');
+        }
+    });
+});
+</script>
+
+</body>
+</html>
